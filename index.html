@@ -11,16 +11,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080A12;
-  --surface:#0F1220;
-  --surface2:#161929;
-  --gold:#C9A84C;
-  --gold-lt:#E8D48A;
-  --text:#F5F0E8;
-  --muted:#8A8095;
+  --bg:#080A12;--surface:#0F1220;--surface2:#161929;
+  --gold:#C9A84C;--gold-lt:#E8D48A;--text:#F5F0E8;--muted:#8A8095;
   --divider:rgba(201,168,76,0.18);
-  --ff-display:'Playfair Display',serif;
-  --ff-body:'Inter',sans-serif;
+  --ff-display:'Playfair Display',serif;--ff-body:'Inter',sans-serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--ff-body);font-weight:300;line-height:1.7;overflow-x:hidden}
@@ -47,11 +41,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .video-section{background:var(--bg);padding:60px 20px;text-align:center}
 .video-eyebrow{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-family:var(--ff-body);font-weight:500}
 .video-wrap{max-width:340px;margin:0 auto;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
-.video-wrap img{width:100%;display:block}
-.video-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:opacity 0.2s}
-.video-play{width:68px;height:68px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,0.5)}
-.video-play svg{margin-left:4px}
-.video-wrap:hover .video-play{background:var(--gold-lt)}
+.video-wrap img{width:100%;display:block;object-fit:cover;aspect-ratio:4/3}
+.video-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(8,10,18,0.35)}
+.video-play{width:72px;height:72px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 32px rgba(0,0,0,0.6);transition:background 0.2s,transform 0.2s}
+.video-wrap:hover .video-play{background:var(--gold-lt);transform:scale(1.08)}
+.video-play svg{margin-left:5px}
+.video-label{font-family:var(--ff-body);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:500}
 .video-embed{width:100%;border-radius:12px;overflow:hidden}
 .video-embed iframe{width:100%;aspect-ratio:9/16;border:none;display:block}
 .hormozi{background:var(--surface);border-top:1px solid var(--divider);border-bottom:1px solid var(--divider);padding:72px 20px;text-align:center}
@@ -164,16 +159,16 @@ footer{padding:24px 20px;border-top:1px solid var(--divider);text-align:center;f
   <div class="hero-scroll"><div class="hero-scroll-line"></div><span>descubre</span></div>
 </section>
 
-<!-- VIDEO: click-to-play -->
+<!-- VIDEO click-to-play con foto de Hanns como thumbnail -->
 <section class="video-section">
   <p class="video-eyebrow">Escúchalo en sus propias palabras</p>
   <div class="video-wrap" id="videoWrap" onclick="playVideo()">
-    <img src="https://img.youtube.com/vi/E4aGHptbg5E/hqdefault.jpg" alt="Hanns Myhulots" style="filter:brightness(0.75)">
-    <div class="video-overlay" id="videoOverlay">
+    <img src="hanns_myhulots.jpg" alt="Hanns Myhulots — Ver video">
+    <div class="video-overlay">
       <div class="video-play">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="#080A12"><path d="M8 5v14l11-7z"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#080A12"><path d="M8 5v14l11-7z"/></svg>
       </div>
-      <span style="font-family:'Inter',sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;background:rgba(8,10,18,0.65);padding:5px 14px;border-radius:3px;font-weight:500">Ver video</span>
+      <span class="video-label">Ver video</span>
     </div>
   </div>
 </section>
@@ -316,22 +311,22 @@ footer{padding:24px 20px;border-top:1px solid var(--divider);text-align:center;f
 
 <script>
 function playVideo(){
-  var wrap = document.getElementById('videoWrap');
-  wrap.onclick = null;
-  wrap.innerHTML = '<div class="video-embed"><iframe src="https://www.youtube.com/embed/E4aGHptbg5E?autoplay=1&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+  var w=document.getElementById('videoWrap');
+  w.onclick=null;
+  w.innerHTML='<div class="video-embed"><iframe src="https://www.youtube.com/embed/E4aGHptbg5E?autoplay=1&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
 }
 (function(){
-  var eventDate = new Date('2026-06-26T17:30:00-06:00');
-  function update(){
-    var now = new Date(), diff = eventDate - now;
-    if(diff <= 0){ document.querySelector('.countdown-bar').style.display='none'; return; }
-    var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
-    document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+  var d=new Date('2026-06-26T17:30:00-06:00');
+  function u(){
+    var n=new Date(),diff=d-n;
+    if(diff<=0){document.querySelector('.countdown-bar').style.display='none';return;}
+    var dd=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-days').textContent=String(dd).padStart(2,'0');
     document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
     document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
     document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
   }
-  update(); setInterval(update,1000);
+  u();setInterval(u,1000);
 })();
 </script>
 </body>
